@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 # Replace YOUR_PASSWORD with your actual PostgreSQL password
-DATABASE_URL = "postgres://postgres:1234567890@localhost:5432/inventory_db"
+DATABASE_URL = "postgresql://postgres:JNrjRwrEaZTZLshqqqlszHqsiYneAhws@tramway.proxy.rlwy.net:36780/railway"
 
 def get_conn():
     return psycopg2.connect(DATABASE_URL)
@@ -117,3 +117,4 @@ def low_inventory():
 # Run Server
 if __name__ == "__main__":
     app.run(debug=True)
+
