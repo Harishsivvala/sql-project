@@ -84,5 +84,6 @@ def etl():
 
     print("ETL completed successfully!")
 
-if __name__ == "__main__":
-    etl()
+#if __name__ == "__main__":
+#   etl()
+
