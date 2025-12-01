@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventory Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            margin-top: 40px;
+        }
+        .chart-container {
+            width: 80%;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Inventory Analytics Dashboard</h1>
+
+<!-- Sales Trend -->
+<h2>📈 Sales Trend (Daily)</h2>
+<div class="chart-container">
+    <canvas id="salesTrend"></canvas>
+</div>
+
+<!-- Sales by Region -->
+<h2>🌍 Sales by Region</h2>
+<div class="chart-container">
+    <canvas id="salesRegion"></canvas>
+</div>
+
+<!-- Sales by Category -->
+<h2>📦 Sales by Category</h2>
+<div class="chart-container">
+    <canvas id="salesCategory"></canvas>
+</div>
+
+<!-- Weather Impact -->
+<h2>⛅ Weather Impact on Sales</h2>
+<div class="chart-container">
+    <canvas id="weatherImpact"></canvas>
+</div>
+
+<script>
+// ------------------------------
+// SALES TREND
+// ------------------------------
+async function loadSalesTrend() {
+    let res = await fetch("/api/sales-trend");
+    let data = await res.json();
+
+    new Chart(document.getElementById("salesTrend"), {
+        type: "line",
+        data: {
+            labels: data.map(d => d.date),
+            datasets: [{
+                label: "Units Sold",
+                data: data.map(d => d.units_sold),
+                borderColor: "blue",
+                borderWidth: 2
+            }]
+        }
+    });
+}
+
+// ------------------------------
+// SALES BY REGION
+// ------------------------------
+async function loadSalesRegion() {
+    let res = await fetch("/api/sales-by-region");
+    let data = await res.json();
+
+    new Chart(document.getElementById("salesRegion"), {
+        type: "bar",
+        data: {
+            labels: data.map(d => d.region),
+            datasets: [{
+                label: "Units Sold",
+                data: data.map(d => d.units_sold),
+                backgroundColor: "green"
+            }]
+        }
+    });
+}
+
+// ------------------------------
+// SALES BY CATEGORY
+// ------------------------------
+async function loadSalesCategory() {
+    let res = await fetch("/api/sales-by-category");
+    let data = await res.json();
+
+    new Chart(document.getElementById("salesCategory"), {
+        type: "bar",
+        data: {
+            labels: data.map(d => d.category),
+            datasets: [{
+                label: "Units Sold",
+                data: data.map(d => d.units_sold),
+                backgroundColor: "orange"
+            }]
+        }
+    });
+}
+
+// ------------------------------
+// WEATHER IMPACT
+// ------------------------------
+async function loadWeatherImpact() {
+    let res = await fetch("/api/weather-impact");
+    let data = await res.json();
+
+    new Chart(document.getElementById("weatherImpact"), {
+        type: "pie",
+        data: {
+            labels: data.map(d => d.weather),
+            datasets: [{
+                data: data.map(d => d.avg_units_sold),
+                backgroundColor: ["red", "blue", "yellow", "purple", "green"]
+            }]
+        }
+    });
+}
+
+// Load all charts
+loadSalesTrend();
+loadSalesRegion();
+loadSalesCategory();
+loadWeatherImpact();
+
+</script>
+</body>
+</html>
